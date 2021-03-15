@@ -1,0 +1,81 @@
+
+.dlg-dialog {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    color: white;
+    box-sizing: border-box;
+    min-width: 300px;
+    max-width: 100%;
+    padding: 0;
+    overflow: hidden;
+}
+
+.dlg-header {
+    padding: .5em;
+}
+
+.dlg-caption {
+    font-size: 1.17em;
+    margin: 0;
+    padding-right: 2em;
+}
+
+.dlg-close-button {
+    position: absolute;
+    right: .5em;
+    top: .5em;
+    width: 1.17em;
+    height: 1.17em;
+    cursor: pointer;
+}
+
+.dlg-close-button::before {
+    transform: rotate(45deg);
+}
+
+.dlg-close-button::after{
+    transform: rotate(-45deg);
+}
+
+.dlg-close-button::before,
+.dlg-close-button::after {
+    content: '';
+    position: absolute;
+    height: 1px;
+    width: 100%;
+    top: 50%;
+    left:0;
+    background-color: black;
+}
+
+.dlg-body {
+    padding: .5em;
+   
+}
+
+.dlg-content {
+    padding: .5em;
+    overflow: auto;
+    
+}
+
+.dlg-button-area {
+    padding: 0 .5em;
+    
+    text-align: right;
+}
+
+.dlg-button-area button {
+   background-color:#901065;
+    color:white;
+    border:none;
+    cursor: pointer;
+    width: 100px;
+    height: 25px;
+    margin:5px;
+    border-radius: 50px;
+}
+.dlg-button-area button:hover {
+   background-color:#b447a9;
+}

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<title>POSTE</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/stylebtn.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+<link rel="icon" type="image/png" th:href="@{/images/icons/login.ico}"/>
+<link rel="stylesheet" th:href="@{/fontawesome/css/all.css}" >
+<link rel="stylesheet" th:href="@{/css/dialog.css}">
+<link rel="stylesheet" th:href="@{/css/dialog-simple.css}">	
+<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}">	
+		
+		<script type="text/javascript" th:src="@{/js/verif.js}"></script>
+</head>
+<body>
+
+
+
+
+			<nav class="navbar navbar-default">
+						<div class="container-fluid">
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle" data-toggle="collapse"
+									data-target="#myNavbar">
+									<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+										class="icon-bar"></span>
+								</button>
+								<a class="navbar-brand" href="/admin">Poste TN</a>
+							</div>
+							<div class="collapse navbar-collapse" id="myNavbar">
+								<ul class="nav navbar-nav">
+										<li  class="active"><a href="/listArchive"><i class="fa fa-archive"></i> Archive</a></li> 
+								
+									<li class="dropdown ">
+									      <a class="dropdown-toggle " data-toggle="dropdown" role="button"><i class="glyphicon glyphicon-user"></i> Employé<span class="caret"></span></a>
+									      <ul class="dropdown-menu ">
+
+									      	<li><a href="/listEmp">Gérer</a></li>
+									      
+									      	<li><a href="/soldeServis">Consulter le solde</a></li> 
+									      	<li><a href="/Emplois">Emplois du temps</a></li> 
+									       
+				     						</ul>
+   									</li>
+				         		   	 
+				          			 <li ><a href="/adminPresence"><i class="fas fa-user-clock"></i> Présence</a></li>
+				          			 <li  ><a href="/statistique/stat"><i class="fa fa-pie-chart"></i> Statistique</a></li>
+				          			
+									<li class="dropdown ">
+									      <a class="dropdown-toggle " data-toggle="dropdown" role="button"><i class="glyphicon glyphicon-wrench"></i> Paramétre<span class="caret"></span></a>
+									      <ul class="dropdown-menu ">
+
+									      	<li><a href="/parametre/employe">Employé</a></li>
+									      	<li><a href="/parametre/travail">Travail</a></li> 
+									       
+				     						</ul>
+   									</li>
+								</ul>
+								<ul class="nav navbar-nav navbar-right">
+									<li class="dropdown">
+									      <a class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fas fa-user-circle p-r-5" > </i><span th:text="${#strings.toUpperCase(userConnect.nom)}+' '+${#strings.toUpperCase(userConnect.prenom)} "></span><span class="caret"></span></a>
+									      <ul class="dropdown-menu">
+											<li><a th:href="@{/editEmploye/{id}(id=${userConnect.id})}">Compte</a></li>
+									       <li><a href="/logout">Déconnexion <span class="glyphicon glyphicon-log-in" ></span></a></li>
+									       
+				     						</ul>
+   									</li>
+								</ul>
+							</div>
+						</div>
+					</nav>
+<div class="limiter " > 
+	<div class="container col-1">
+		<div class="wrap-login100 p-l-80 p-r-80 p-t-55 p-b-55 text-center " th:if="${empty}">
+			<i class="fas fa-exclamation-triangle fa-9x text-white"></i>
+			<h2 class="p-t-30">[[${#strings.toUpperCase(date)}]]</h2>
+			<p class="p-t-10 text-white">Pas d'archive disponible aujourd'hui</p>
+			<a class=" text-white" href="/all"><i class="far fa-eye"></i> Afficher tous</a><br><br>
+			<a class="btn text-white" href="/addArchives"><i class="fas fa-folder-plus"></i> Ajouter un archive</a>
+			
+		</div>
+		<div class="wrap-login1000 p-l-80 p-r-80 p-t-55 p-b-55 " th:unless="${empty}">
+				<table>
+					<tr>
+						<td>
+							<h5 class="  p-b-20">Date : <span th:text="${date}"></span></h5>
+						</td>
+						<td>
+						
+						</td>
+					</tr>
+				</table>
+					<div class="text-center">
+						<h1>Archive</h1>
+						<h5>( courant )</h5>
+					</div>
+					<br>
+		
+			<table class="searchTab">
+				<tr>
+					<td>
+					<p class="my-5">
+						<form th:action="@{/searchArchive}" method="post" autocomplete="off">
+						<label th:if="${param.notFound}" class="text-danger">Archive introuvable !</label>
+							<div class="input-group col-md-5 mb-5">
+	    						<span class="input-group-addon "><button class="fa fa-search" type="submit"></button></span>
+	   				 			<table>
+   												<tr><td>
+   													 <input id="Search"  type="text" class="form-control sear" name="search" placeholder="Recherche"> 
+   												</td>
+   												<td>
+   													<a th:if="${chercher}"  href="/listArchive" class=" p-t-4 p-l-10 text-dark fas fa-arrow-circle-left fa-2x"></a>
+   												</td>
+   												</tr>
+   								</table>
+	  						</div>
+						</form>
+					</td>
+					<td align="right">
+					<table ><tr>
+					<td style="width:37%">
+						<p class="my-5" th:if="${totalPages > 1}">
+								<button class="btn " type="button" onclick="pdf()"><i class="glyphicon glyphicon-download-alt"> PDF</i></button>
+						</p>
+					</td>
+					<td>
+							<p class="my-5" align="right">
+							<a href="/addArchives" class="btn "><i class="fa fa-plus"></i> Ajouter un archive</a>
+						</p>
+					</td>
+					</tr>
+					</table>
+						
+					</td>
+				</tr>
+			</table><br>
+			<table class="table  table-hover" id="id">
+				<thead>
+					<tr>
+						<th >Employé</th>
+						<th>Numéro Unique</th>
+						<th>Type</th>
+						<th>CIN</th>
+						<th>Date</th>
+						<th>Montant</th>
+						<th>Modifier</th>
+						<th>Supprimer</th>
+						<th>Info</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+					<tr th:each="arch : ${archives}">
+						<td ><span data-th-if="${arch.user}" th:text="${arch.user.nom}+' '+${arch.user.prenom}"></span></td>
+						<td data-th-if="${arch}"  th:text="${arch.uniqueCode}"></td>
+						<td data-th-if="${arch}"  th:text="${arch.nom}"></td>
+						<td data-th-if="${arch}" th:text="${arch.cin}"></td>
+						<td data-th-if="${arch}" th:text="${arch.date}"></td>
+						<td data-th-if="${arch}" th:text="${arch.montant}"></td>
+						<td data-th-if="${arch}"><a th:href="@{/editArchive/{id}(id=${arch.id})}"class="btn "><i class="fas fa-edit"></i></a></td>
+						<td data-th-if="${arch}"><a th:onclick="'confirmeDelete(\''+ @{/deleteArch/{id}(id=${arch.id})} + '\');'"  class="btn "><i class="fas fa-trash"></i></a></td>
+						<td data-th-if="${arch}"><a data-th-if="${arch.user}" th:href="@{/infos/{id}(id=${arch.user.id})}" class="btn "><i class="fa fa-info-circle"></i></a></td>
+					</tr>
+					
+					<tr>
+						<td colspan="4" >Somme reçue Aujourd'hui : <span th:if="${somme}!=null" th:text="${somme}+' '+DT"></span><span th:if="${somme}==null" th:text="'0 '+DT"></span></td>
+						<td colspan="5" align="left">Somme servi Aujourd'hui : <span th:if="${retrait}!=null" th:text="${retrait}+' '+DT"></span><span th:if="${retrait}==null" th:text="'0 '+DT"></span></td>
+					</tr>
+				</tbody>
+			</table>
+			
+						<table class="searchTab">
+							<tr><td>
+								<nav aria-label="Page navigation example" th:if="${totalPages > 1}">
+									<ul class="pagination" >
+										<li class="page-item" ><a th:if="${currentPage > 1}" class="page-link" th:href="@{'/pagesAdmin/'+1}">Début</a><a th:unless="${currentPage > 1}">Début</a></li>
+									  <li class="page-item" ><a th:if="${currentPage > 1}" class="page-link" th:href="@{'/pagesAdmin/'+${currentPage - 1}}">Précédent</a><a th:unless="${currentPage > 1}">Précédent</a></li>
+									 
+									  <li th:each="i: ${#numbers.sequence(begin,end)}" class="page-item "><a th:if="${currentPage !=i}" class="page-link" th:href="@{'/pagesAdmin/'+${i}}">[[${i}]]</a><span class="text-white"  th:unless="${currentPage!=i}">[[${i}]]</span></li>
+								   
+									  <li class="page-item"><a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/pagesAdmin/' + ${currentPage + 1}}">Suivant</a><a th:unless="${currentPage < totalPages}">Suivant</a></li>
+									  <li class="page-item"><a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/pagesAdmin/' + ${totalPages}}">Dernière</a><a th:unless="${currentPage < totalPages}">Dernière</a></li>
+									  
+									</ul>
+							  </nav>	
+										
+								<p class="my-5" align="left" th:unless="${totalPages > 1}">
+											<a href="/all" class="btn "><i class="glyphicon glyphicon-eye-open"></i> Afficher tous les archives</a>
+								</p>
+								</td>	
+								<td>
+								<p class="my-5" align="right" th:if="${totalPages > 1}">
+											<a href="/all" class="btn "><i class="glyphicon glyphicon-eye-open"></i> Afficher tous les archives</a>
+								</p>
+								<p class="my-5" align="right" th:unless="${totalPages > 1}">
+									<button class="btn " type="button" onclick="pdf()"><i class="glyphicon glyphicon-download-alt"> PDF</i></button>
+								</p>		
+								</td>	
+						</table>	
+							
+		</div>
+	</div>
+</div>
+
+
+<footer class="footer ">
+       		<div class="text-center"><p style="color:rgb(180,180,180);"> <i class="fa fa-copyright "></i>  2020 Copyright | <a href="https://www.facebook.com/mouhebmhh"><b>Mouheb</b></a></p></div>
+    </footer>
+	<script type="text/javascript" src="/js/dialog.js"></script>
+	<script type="text/javascript" src="/js/dialog-polyfill.js"></script>
+	<script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
+	<script type="text/javascript" th:src="@{/pdf/dist/jspdf.min.js/}"></script>
+	<script type="text/javascript" th:src="@{/pdf/dist/jspdf.plugin.autotable.js/}"></script>
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+</body>
+</html>

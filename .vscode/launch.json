@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-Application<registration-login-springboot-security-thymeleaf>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "net.javaguides.springboot.springsecurity.Application",
+            "projectName": "registration-login-springboot-security-thymeleaf",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-Application<PFE-Mhamdi-Mouheb>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "net.javaguides.springboot.springsecurity.Application",
+            "projectName": "PFE-Mhamdi-Mouheb",
+            "args": ""
+        }
+    ]
+}

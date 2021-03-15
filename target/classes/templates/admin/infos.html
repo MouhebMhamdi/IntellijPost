@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<title>POSTE</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/stylebtn.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+<link rel="icon" type="image/png" th:href="@{/images/icons/login.ico}"/>
+<link rel="stylesheet" th:href="@{/fontawesome/css/all.css}" >
+<link rel="stylesheet" th:href="@{/css/dialog.css}">
+<link rel="stylesheet" th:href="@{/css/dialog-simple.css}">	
+<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}">	
+</head>
+<body>
+<div class="limiter-log" > 
+<nav class="navbar navbar-default">
+						<div class="container-fluid">
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle" data-toggle="collapse"
+									data-target="#myNavbar">
+									<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+										class="icon-bar"></span>
+								</button>
+								<a class="navbar-brand" href="/admin">Poste TN</a>
+							</div>
+							<div class="collapse navbar-collapse" id="myNavbar">
+								<ul class="nav navbar-nav">
+										<li class="active"><a href="/listArchive"><i class="fa fa-archive"></i> Archive</a></li> 
+								
+									<li class="dropdown ">
+									      <a class="dropdown-toggle " data-toggle="dropdown" role="button"><i class="glyphicon glyphicon-user"></i> Employé<span class="caret"></span></a>
+									      <ul class="dropdown-menu ">
+
+									      	<li><a href="/listEmp">Gérer</a></li>
+									      
+									      	<li><a href="/soldeServis">Consulter le solde</a></li> 
+									       <li><a href="/Emplois">Emplois du temps</a></li> 
+				     						</ul>
+   									</li>
+				         		   	 
+				          			 <li ><a href="/adminPresence"><i class="fas fa-user-clock"></i> Présence</a></li>
+				          			 <li  ><a href="/statistique/stat"><i class="fa fa-pie-chart"></i> Statistique</a></li>
+				          			
+									<li class="dropdown ">
+									      <a class="dropdown-toggle " data-toggle="dropdown" role="button"><i class="glyphicon glyphicon-wrench"></i> Paramétre<span class="caret"></span></a>
+									      <ul class="dropdown-menu ">
+
+									      	<li><a href="/parametre/employe">Employé</a></li>
+									      	<li><a href="/parametre/travail">Travail</a></li> 
+									       
+				     						</ul>
+   									</li>
+								</ul>
+								<ul class="nav navbar-nav navbar-right">
+									<li class="dropdown">
+									      <a class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fas fa-user-circle p-r-5" > </i><span th:text="${#strings.toUpperCase(userConnect.nom)}+' '+${#strings.toUpperCase(userConnect.prenom)} "></span><span class="caret"></span></a>
+									      <ul class="dropdown-menu">
+											<li><a th:href="@{/editEmploye/{id}(id=${userConnect.id})}">Compte</a></li>
+									       <li><a href="/logout">Déconnexion <span class="glyphicon glyphicon-log-in" ></span></a></li>
+									       
+				     						</ul>
+   									</li>
+								</ul>
+							</div>
+						</div>
+					</nav>
+
+
+		<div class="container col-1">
+			<div class="wrap-login10 p-l-15 p-r-15 p-t-55 p-b-55" >
+			
+			
+					<br>
+					
+					<div class="panel-group p-t-30" >
+					    <div class="panel panel-default" id="pan" th:each="emp : ${user}">
+					      <div class="panel-heading" >
+					      		<p class="my-5" align="right">
+										<a href="/listArchive"  ><i class="	fa fa-arrow-circle-left"> Retour</i></a>
+								</p>
+					      <h3 class="text-center text-white"th:text="${#strings.toUpperCase(emp.nom)}+' '+${#strings.toUpperCase(emp.prenom)}"></h3></div>
+					      <div class="panel-body">
+					     		 
+					    <ul class="list-group"  >
+							  <li class="list-group-item"><b ><i class="fas fa-envelope"></i> Email : </b><span th:each="e : ${emp.roles}" th:unless="${e.name}=='ROLE_ADMIN'"><a th:href="@{/send/{id}(id=${emp.id})}" th:text="${emp.email}"></a></span><span th:each="e : ${emp.roles}" th:if="${e.name}=='ROLE_ADMIN'"><span th:text="${emp.email}"></span></span></li>
+							  <li class="list-group-item"><b><i class="fas fa-map-marked-alt"></i> Adresse : </b><span th:text="${emp.adresse}"></span></li>
+							  <li class="list-group-item"><b ><i class="fas fa-phone"></i> Téléphone : </b><span th:text="${emp.tel}"></span></li>
+							  <li class="list-group-item"><b ><i class="fas fa-briefcase"></i> Guichet : </b><span th:text="${emp.guichet}"></span></li>	  
+						</ul>
+					
+					      </div>
+					    </div>
+
+				</div>
+			</div>
+
+
+</div>
+<footer class="footer ">
+       		<div class="text-center"><p style="color:rgb(180,180,180);"> <i class="fa fa-copyright "></i>  2020 Copyright | <a href="https://www.facebook.com/mouhebmhh"><b>Mouheb</b></a></p></div>
+    </footer>
+<script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>POSTE</title>
+<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/stylebtn.css}">
+	<link rel="icon" type="image/png" th:href="@{/images/icons/login.ico}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}">
+	
+</head>
+<body>
+	
+	<div class="limiter-log"> 
+	
+		<div class="container-login100 col-1">
+		
+			<div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
+				<form th:action="@{/login}" method="POST" autocomplete="off" class="validate-form">	
+    
+            	 	<a href="/login">
+            
+						<img draggable="false" class="imgg" th:src="@{images/img/Laposte.png}" width="300" height="150" >
+			
+					</a>
+					
+					<div th:if="${param.emailEnvoye}">
+						<div class="alert alert-success " align="center">S'il vous plait vérifier votre boite Email pour changer votre mot de passe</div>
+					</div>
+					<div th:if="${param.passChange}">
+						<div class="alert alert-success " align="center">votre mot de passe à été changé avec succès ! s'il vous plait connectez-vous maintenant...</div>
+					</div>
+					<div th:if="${param.connexion}">
+						<div class="alert alert-danger">Erreur de connexion !!</div>
+					</div>
+					<div th:if="${param.error}">
+						<div class="alert alert-danger">Nom d'utilisateur ou mot de passe Incorrect !!</div>
+					</div>
+					<div th:if="${param.logout}">
+						<div class="alert alert-success">le changement du nom d'utilisateur fait avec succes  !!</div>
+					</div>
+					<span class="txt1 p-b-11">
+						NOM D'UTILISATEUR
+					</span>
+					<div class="wrap-input100 validate-input m-b-36" data-validate = "Ce champ ne peut pas être vide">
+						<input class="input100" type="text" id="username" name="username" >
+						<span class="focus-input100"></span>
+					</div>
+					
+					<label class="txt1 p-b-11" for="validationCustom03">
+						Mot de passe
+					</label>
+					<div class="wrap-input100 validate-input m-b-12" data-validate = "Ce champ ne peut pas être vide">
+						<span class="btn-show-pass">
+							<i class="fa fa-eye"></i>
+						</span>
+						 <input  class="input100" type="password" id="validationCustom03" name="password" >
+						<span class="focus-input100"></span>
+					</div>
+					
+					<div class="flex-sb-m w-full p-b-48">
+						<div class="contact100-form-checkbox">
+							<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+							<label class="label-checkbox100" for="ckb1">
+								Laissez-moi en session ouverte
+							</label>
+						</div>
+						<label class="oublier" for="ckb1">
+								<a href="/resetPassword">Mot de passe oublier ?</a>
+							</label>
+
+					</div>
+				
+ 					
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn" name="login-submit" id="login-submit">
+							Connexion
+						</button>
+					</div>
+                   
+				</form>
+			</div>
+		</div>
+	</div>
+		<div id="dropDownSelect1"></div>
+	<script th:src="@{/vendor/jquery/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/vendor/animsition/js/animsition.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap/js/popper.js}"></script>
+	<script th:src="@{/vendor/select2/select2.min.js}"></script>
+	<script th:src="@{/vendor/daterangepicker/moment.min.js}"></script>
+	<script th:src="@{/vendor/daterangepicker/daterangepicker.js}"></script>
+	<script th:src="@{/vendor/countdowntime/countdowntime.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+
+
+</body>
+</html>

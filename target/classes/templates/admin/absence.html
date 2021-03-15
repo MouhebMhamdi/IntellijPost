@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<title>POSTE</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/stylebtn.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+<link rel="icon" type="image/png" th:href="@{/images/icons/login.ico}"/>
+<link rel="stylesheet" th:href="@{/fontawesome/css/all.css}" >
+<link rel="stylesheet" th:href="@{/css/dialog.css}">
+<link rel="stylesheet" th:href="@{/css/dialog-simple.css}">	
+<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}">	
+<style>
+
+
+</style>
+</head>
+<body  style="overflow-y: hidden;">
+	<div class="limiter-log"> 
+	
+		<nav class="navbar navbar-default">
+						<div class="container-fluid">
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle" data-toggle="collapse"
+									data-target="#myNavbar">
+									<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+										class="icon-bar"></span>
+								</button>
+								<a class="navbar-brand" href="/admin">Poste TN</a>
+							</div>
+							<div class="collapse navbar-collapse" id="myNavbar">
+								<ul class="nav navbar-nav">
+										<li class="active"><a href="/listArchive"><i class="fa fa-archive"></i> Archive</a></li> 
+								
+									<li class="dropdown ">
+									      <a class="dropdown-toggle " data-toggle="dropdown" role="button"><i class="glyphicon glyphicon-user"></i> Employé<span class="caret"></span></a>
+									      <ul class="dropdown-menu ">
+
+									      	<li><a href="/listEmp">Gérer</a></li>
+									      
+									      	<li><a href="/soldeServis">Consulter le solde</a></li> 
+									       <li><a href="/Emplois">Emplois du temps</a></li> 
+				     						</ul>
+   									</li>
+				         		   	 
+				          			 <li ><a href="/adminPresence"><i class="fas fa-user-clock"></i> Présence</a></li>
+				          			 <li  ><a href="/statistique/stat"><i class="fa fa-pie-chart"></i> Statistique</a></li>
+				          			
+									<li class="dropdown ">
+									      <a class="dropdown-toggle " data-toggle="dropdown" role="button"><i class="glyphicon glyphicon-wrench"></i> Paramétre<span class="caret"></span></a>
+									      <ul class="dropdown-menu ">
+
+									      	<li><a href="/parametre/employe">Employé</a></li>
+									      	<li><a href="/parametre/travail">Travail</a></li> 
+									       
+				     						</ul>
+   									</li>
+								</ul>
+								<ul class="nav navbar-nav navbar-right">
+									<li class="dropdown">
+									      <a class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fas fa-user-circle p-r-5" > </i><span th:text="${#strings.toUpperCase(userConnect.nom)}+' '+${#strings.toUpperCase(userConnect.prenom)} "></span><span class="caret"></span></a>
+									      <ul class="dropdown-menu">
+											<li><a th:href="@{/editEmploye/{id}(id=${userConnect.id})}">Compte</a></li>
+									       <li><a href="/logout">Déconnexion <span class="glyphicon glyphicon-log-in" ></span></a></li>
+									       
+				     						</ul>
+   									</li>
+								</ul>
+							</div>
+						</div>
+					</nav>
+<div class="container col-1 ">
+		<div class="wrap-login100  p-l-85 p-r-85 p-t-20 p-b-55 wid  "  >
+			
+				<form th:action="@{/enregistrer}" th:object="${user}" name="f" method="post">
+				
+					<h3 align="center" style="padding:10px;">Administrateur présence </h3>
+						 <div class="row">
+						 <div th:if="${param.erreur}">
+						 
+									<div class="bg-danger text-danger " align="center">Code incorrect !!! </div><br>
+								</div>
+								<div th:if="${param.erreurTime}"><br>
+									<div class="bg-danger alert-danger " align="center">Rendez-vous a 8h svp !! </div><br>
+								</div>
+							<div th:if="${param.glob}"><br>
+									<div class="bg-danger text-danger " align="center">Le code ne doit étre vide ! </div><br>
+								</div>
+								<div th:if="${param.erreurDate}"><br>
+									<div class="bg-danger text-danger " align="center">Vous etes présent aujourd'hui rendez-vous demain ! </div><br>
+								</div>
+								<div th:if="${param.success}"><br>
+									<div class="bg-success text-success " align="center">Pointage efféctuer avec succes ! </div><br>
+								</div>
+							<table class="cent ">
+								<tr>
+									<td  align="center" >
+										<b>CIN : </b>
+									</td>
+									<td>
+										<h5 th:text="${user.cin}"></h5>
+									</td>
+								</tr>
+							</table>
+							<br>
+							<div class="form-group" >
+								 <input id="email" name="CodeSecret" type="password"  class="form-control space-right" placeholder="Code Secret .."/>
+							</div>
+			
+		     			 <button class="btn  center-block" type="submit">
+		     			 <i class="far fa-save"></i>
+		     			 Enregistrer
+		     			 </button>
+		 			</div>
+		
+				</form>
+		</div>
+	</div>
+</div>
+
+
+
+<footer class="footer ">
+       		<div class="text-center"><p style="color:rgb(180,180,180);"> <i class="fa fa-copyright "></i>  2020 Copyright | <a href="https://www.facebook.com/mouhebmhh"><b>Mouheb</b></a></p></div>
+    </footer>
+
+
+<script type="text/javascript"
+		th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
+	<script type="text/javascript"
+		th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<title>POSTE</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/stylebtn.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+<link rel="icon" type="image/png" th:href="@{/images/icons/login.ico}"/>
+<link rel="stylesheet" th:href="@{/fontawesome/css/all.css}" >
+<link rel="stylesheet" th:href="@{/css/dialog.css}">
+<link rel="stylesheet" th:href="@{/css/dialog-simple.css}">	
+<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}">	
+
+<script type="text/javascript" th:src="@{/js/sweetalert2_2.js}"></script>
+<script type="text/javascript" th:src="@{/js/sweetalert2.js}"></script>
+<script th:src="@{/lib/chart-master/Chart.js}"></script>
+
+</head>
+<body>
+
+<div class="limiter-log " > 
+	
+		<nav class="navbar navbar-default">
+						<div class="container-fluid">
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle" data-toggle="collapse"
+									data-target="#myNavbar">
+									<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+										class="icon-bar"></span>
+								</button>
+								<a class="navbar-brand" href="/admin">Poste TN</a>
+							</div>
+							<div class="collapse navbar-collapse" id="myNavbar">
+								<ul class="nav navbar-nav">
+										<li  ><a href="/listArchive"><i class="fa fa-archive"></i> Archive</a></li> 
+								
+									<li class="dropdown ">
+									      <a class="dropdown-toggle " data-toggle="dropdown" role="button"><i class="glyphicon glyphicon-user"></i> Employé<span class="caret"></span></a>
+									      <ul class="dropdown-menu ">
+
+									      	<li><a href="/listEmp">Gérer</a></li>
+									      
+									      	<li><a href="/soldeServis">Consulter le solde</a></li> 
+									       <li><a href="/Emplois">Emplois du temps</a></li> 
+				     						</ul>
+   									</li>
+				         		   	 
+				          			 <li ><a href="/adminPresence"><i class="fas fa-user-clock"></i> Présence</a></li>
+				          			 <li  class="active"><a href="/statistique/stat"><i class="fa fa-pie-chart"></i> Statistique</a></li>
+				          			
+									<li class="dropdown ">
+									      <a class="dropdown-toggle " data-toggle="dropdown" role="button"><i class="glyphicon glyphicon-wrench"></i> Paramétre<span class="caret"></span></a>
+									      <ul class="dropdown-menu ">
+
+									      	<li><a href="/parametre/employe">Employé</a></li>
+									      	<li><a href="/parametre/travail">Travail</a></li> 
+									       
+				     						</ul>
+   									</li>
+								</ul>
+								<ul class="nav navbar-nav navbar-right">
+									<li class="dropdown">
+									      <a class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fas fa-user-circle p-r-5" > </i><span th:text="${#strings.toUpperCase(userConnect.nom)}+' '+${#strings.toUpperCase(userConnect.prenom)} "></span><span class="caret"></span></a>
+									      <ul class="dropdown-menu">
+											<li><a th:href="@{/editEmploye/{id}(id=${userConnect.id})}">Compte</a></li>
+									       <li><a href="/logout">Déconnexion <span class="glyphicon glyphicon-log-in" ></span></a></li>
+									       
+				     						</ul>
+   									</li>
+								</ul>
+							</div>
+						</div>
+					</nav>
+					<div th:if="*{prime}">
+						<div class="form-group">
+									<div class="col-sm-12">
+								
+										<div class="full-width-div jumbotron text-center background">
+											 <div class="p-t-160">
+												 <h1>Employé du jour </h1><h2  data-th-if="${prime}" th:text="${prime.nom}+' '+${prime.prenom}"></h2>
+											<div class="p-t-30">
+												 <a  href="#stat" class="href js-scrollTo"> <font size="50"><span class="glyphicon glyphicon-chevron-down"></span></font></a>
+											 </div>
+											 </div>
+										 
+										</div>
+									</div>
+								</div>	
+					</div>	
+					<div class="row" th:unless="*{prime}">
+						<div class="form-group" data-th-unless="${us}">
+									<div class="col-sm-12">
+								
+										<div class="full-width-div jumbotron text-center backgroundV2">
+											 
+												 <span class="fas fa-frown glyphicon-alert fa-9x "></span><h1>Faible Rendement !!</h1><h2  data-th-if="${prime}" th:text="${prime.nom}+' '+${prime.prenom}"></h2>
+											
+												 <a  href="#stat" class="href"> <font size="50"><span class="glyphicon glyphicon-chevron-down"></span></font></a>
+											 
+										 
+										</div>
+									</div>
+								</div>	
+					</div>				
+	<div class="container-stat " id="stat">
+		<div class="limiter-log">
+			<div class="container-login100 col-1">
+			<div class="wrap-login10000 p-l-100 p-r-100 p-t-55 p-b-55">
+		<div class=" row " data-th-unless="${us}" >
+              <div class="col-sm-4  ">
+               	<div class="colone">
+               		<div class="header" >
+	               		 	<h5>Pourcentage éstimé du travail courante</h5>
+	               	</div>
+	               	<div th:class="'c100 p'+${work}+ ' center'">
+	       			 	<span th:text="${work}+'%'"></span>
+			        	<div class="slice">
+				            <div class="bar"></div>
+				            <div class="fill"></div>
+		       		 	</div>
+   					</div>
+               	</div>
+              </div>
+              <!-- /col-md-4-->
+              <div class=" col-sm-4 ">
+	                <div class="colone">
+	               		 <div class="header">
+	               		 	<h5>Pourcentage éstimé du présence courante</h5>
+	               		 </div>
+	               		<div th:class="'c100 p'+${presence}+' center'">
+		       			 	<span th:text="${presence}+'%'"></span>
+				        	<div class="slice">
+					            <div class="bar"></div>
+					            <div class="fill"></div>
+			       		 	</div>
+   						</div>
+	                </div>
+              </div>
+              <!-- /col-md-4 -->
+              <div class=" col-sm-4">
+	               <div class="colone">
+	               		<div class="header">
+	               			<h5>Pourcentage éstimé d'absences courante</h5>
+	               		</div>
+	               		<div th:class="'c100 p'+${absence}+' center'">
+		       			 	<span th:text="${absence}+'%'"></span>
+				        	<div class="slice">
+					            <div class="bar"></div>
+					            <div class="fill"></div>
+			       		 	</div>
+   						</div>
+	               </div>
+              </div>
+        
+        
+              <!-- /col-md-4 -->
+            </div>	
+            <div class="row justify-content-md-center" >
+          		<div class="col-sm-6">
+          			 <div id="id" class="alert alert-secondary ">
+									<h2 class="text-dark">Totale de présences</h2><h5 data-th-if="${us}" th:text="'pour ( '+${us.nom}+' '+${us.prenom}+' )'"></h5 ><div th:if="${nbr}" th:text="${nbr}"></div><div th:if="${nbrs}" th:text="${nbrs}"></div>
+						</div>
+          		</div>
+          		<div class="col-sm-6">
+          			<div   id="id" class="alert alert-secondary rd">
+									<h2 class="text-dark">Totale des absences</h2>	<h5 data-th-if="${us}" th:text="'pour ( '+${us.nom}+' '+${us.prenom}+' )'"></h5>	<div th:if="${abss}" th:text="${abss}"></div><div th:if="${abs}" th:text="${abs}"></div>
+							</div>
+          		</div>
+          		<div class="col-sm-6">
+          			<div   id="id" class="alert alert-secondary ">
+									<h2 class="text-dark">Somme réçue</h2><h5 data-th-unless="${us}">Ajourd'hui</h5>		<h5 data-th-if="${us}" th:text="'pour ( '+${us.nom}+' '+${us.prenom}+' )'"></h5>	<div th:if="${argents}" th:text="${argents}+'DT'"></div><div th:if="${argent}" th:text="${argent}+'DT'"></div>
+							</div>
+          		</div>
+          		<div class="col-sm-6">
+          			<div   id="id" class="alert alert-secondary rd">
+									<h2 class="text-dark">Totale des archives </h2><h5 data-th-unless="${us}">Ajourd'hui</h5>		<h5 data-th-if="${us}" th:text="'pour ( '+${us.nom}+' '+${us.prenom}+' )'"></h5>	<div th:if="${travails}" th:text="${travails}"></div><div th:if="${travail}" th:text="${travail}"></div>
+							</div>
+          		</div>
+          		<div class="col-sm-6">
+          			<div   id="id" class="alert alert-secondary ">
+									<h2 class="text-dark">Somme Totale réçue</h2>	<h5 data-th-if="${us}" th:text="'pour ( '+${us.nom}+' '+${us.prenom}+' )'"></h5>	<div th:if="${argentsTot}" th:text="${argentsTot}+'DT'"></div><div th:if="${argent}" th:text="${argent}+'DT'"></div>
+							</div>
+          		</div>
+          		<div class="col-sm-6">
+          			<div   id="id" class="alert alert-secondary rd">
+									<h2 class="text-dark">Totale des archives </h2>	<h5 data-th-if="${us}" th:text="'pour ( '+${us.nom}+' '+${us.prenom}+' )'"></h5>	<div th:if="${travailsTot}" th:text="${travailsTot}"></div><div th:if="${travail}" th:text="${travail}"></div>
+							</div>
+				  </div>
+		
+					<table   class="table table-dark table-hover  " >
+						<thead>
+							<tr>
+								<th colspan="3" ><h1 class="text-dark">Les employés</h1></th>
+							</tr>
+							<tr>
+								
+								<th>Nom</th>
+								<th>Prénom</th>
+								<th>Consulter</th>
+							
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="emp : ${employes}">
+									<td th:utext="${emp.nom}"></td>
+									<td th:utext="${emp.prenom}"></td>
+									<td ><a class="btn " th:href="@{/statistique/nbrJour/{id}(id=${emp.id})}"><i class="fa fa-info-circle"></i></a></td>
+
+							</tr>
+						
+						</tbody>
+					</table>
+					
+			</div>
+					
+						
+						
+            </div>
+            
+	</div>
+	</div>
+	</div>
+</div>
+</div>	
+<footer class="footer ">
+       		<div class="text-center"><p style="color:rgb(180,180,180);"> <i class="fa fa-copyright "></i>  2020 Copyright | <a href="https://www.facebook.com/mouhebmhh"><b>Mouheb</b></a></p></div>
+    </footer>
+	<script th:src="@{/vendor/jquery/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/vendor/animsition/js/animsition.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap/js/popper.js}"></script>
+	<script th:src="@{/vendor/select2/select2.min.js}"></script>
+	<script th:src="@{/vendor/daterangepicker/moment.min.js}"></script>
+	<script th:src="@{/vendor/daterangepicker/daterangepicker.js}"></script>
+	<script th:src="@{/vendor/countdowntime/countdowntime.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+    	<script type="text/javascript" src="/js/dialog.js"></script>
+    	<script type="text/javascript" src="/js/select.js"></script>	
+		<script type="text/javascript" src="/js/dialog-polyfill.js"></script>
+		<script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
+		<script type="text/javascript" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+		<title>POSTE</title>
+		<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/stylebtn.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+<link rel="icon" type="image/png" th:href="@{/images/icons/login.ico}"/>
+<link rel="stylesheet" th:href="@{/fontawesome/css/all.css}" >
+<link rel="stylesheet" th:href="@{/css/dialog.css}">
+<link rel="stylesheet" th:href="@{/css/dialog-simple.css}">	
+<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}">	
+		
+		<script type="text/javascript" th:src="@{/js/verif.js}"></script>
+</head>
+<body>
+
+
+
+
+			<nav class="navbar navbar-default">
+			  <div class="container-fluid">
+			    <div class="navbar-header">
+			      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			      </button>
+			      <a class="navbar-brand" href="/user">Poste TN</a>
+			    </div>
+			    <div class="collapse navbar-collapse" id="myNavbar">
+			      <ul class="nav navbar-nav">
+			        <li ><a href="/user"><i class="fas fa-hand-pointer-o"></i> Pointer</a></li>
+		            <li class="active"><a href="/list"><i class="fa fa-archive"></i> Archive</a></li>
+		            <li><a href="/EmploisUser"><i class="fas fa-clock"></i> Temps</a></li>
+			      </ul>
+			      <ul class="nav navbar-nav navbar-right">
+			        <li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fas fa-user-circle p-r-5" > </i><span th:text="${#strings.toUpperCase(userConnect.nom)}+' '+${#strings.toUpperCase(userConnect.prenom)} "></span><span class="caret"></span></a>
+				      <ul class="dropdown-menu text-rght">
+				      <li><a href="/parametreCompte/param">Paramétre</a></li>
+				       <li><a href="/logout">Déconnexion <span class="glyphicon glyphicon-log-in" ></span></a></li>
+     				 </ul>
+   				 </li>
+			      </ul>
+			    </div>
+			  </div>
+			</nav>
+	<div class="limiter"> 	
+		<div th:if="${solde}">
+			<div class="container col-1" >
+				<div class="wrap-login100 p-l-80 p-r-80 p-t-55 p-b-55 text-center " >
+					<i class="fas fa-exclamation-triangle fa-9x text-white"></i>
+					<p class="text-white p-t-10">Montant n'est pas encore chargé !! <br>S'il vous plaît contactez l'administrateur. </p>
+				</div>
+			</div>
+		</div>
+		<div data-th-unless="${solde}">
+		<div class="container col-1"  th:if="${empty}">
+			<div class="wrap-login100 p-l-80 p-r-80 p-t-55 p-b-55 text-center " th:if="${empty}">
+				<i class="fas fa-exclamation-triangle fa-9x text-white"></i>
+				<h2 class="p-t-30">[[${#strings.toUpperCase(date)}]]</h2>
+				<p class="p-t-10 text-white">Pas d'archive disponible aujourd'hui</p>
+				<a class=" text-white" href="/listAll"><i class="far fa-eye"></i> Afficher tous</a><br><br>
+				<a class="btn text-white" href="/addArchive"><i class="fas fa-folder-plus"></i> Ajouter un archive</a>
+				
+			</div>
+		</div>
+		
+		<div class="container col-1"  th:unless="${empty}">
+			
+			<div class="wrap-login100 p-l-80 p-r-80 p-t-55 p-b-55" th:if="${guichet}">
+				<table style="width:100%;"  th:unless="${guichet}">
+					<tr>
+					<td width="50%">
+					<h5 >Date : <span th:text="${date}"></span></h5>
+					</td>
+					<td width="25%"></td>
+					<td align="right" >
+				<p class="bg-danger text-danger text-center" th:if="${param.demandeArgent}"><i class="	fas fa-exclamation-triangle "></i>  Votre solde est insuffisant s'il vous plaît contacter le président  </p>
+				<p style="width:150px"class="bg-success text-success text-center" th:if="${param.present}"><i class="	fas fa-exclamation-triangle "></i>   vous êtes présent !!  </p>
+				</td>
+				</tr>
+				<br><br>	</table>
+			<div class="text-center" th:unless="${guichet}">
+				<h1 >Archive</h1>
+				<h5>(Aujourd'hui)</h5>
+				<br><br></div>
+				<div th:if="${guichet}" class="text-center">
+					<i class="fas fa-exclamation-triangle fa-9x text-white"></i>
+					<h2 class="p-t-30">[[${#strings.toUpperCase(date)}]]</h2>
+					<p class="p-t-10 text-white">Aucun guichet trouver !!<br> S'il vous plaît contactez l'administrateur .</p>
+				</div>	
+			</div>
+			<div class="wrap-login1000 p-l-80 p-r-80 p-t-55 p-b-55" th:unless="${guichet}">
+			
+						<table style="width:100%;">
+						<tr>
+						<td width="25%">
+						<h5 >Date : <span th:text="${date}"></span></h5>
+						</td>
+						<td width="25%"></td>
+						<td align="right" >
+					<p class="bg-danger text-danger text-center" th:if="${param.demandeArgent}"><i class="	fas fa-exclamation-triangle "></i>  Votre solde est insuffisant s'il vous plaît contacter le président  </p>
+					<p style="width:400px"class="bg-success text-success text-center" th:if="${param.present}"><i class="	fas fa-exclamation-triangle "></i>   vous êtes présent !! Commencer votre travail ...  </p>
+					</td>
+					</tr>
+				</table><br><br>
+				<div class="text-center">
+					<h1 >Archive</h1>
+					<h5>(Aujourd'hui)</h5>
+				</div>
+				<br>
+					<table style="width:100%;">
+						<tr>
+							<td>
+								
+				  				<p class="my-5">
+									<form th:action="@{/searchArchiveEmp}" method="post" autocomplete="off">
+										<label th:if="${param.notFound}" class="text-danger">Archive introuvable !</label>
+										<div class="input-group col-md-5 mb-5">
+											
+				    						<span class="input-group-addon btn"><button class="fa fa-search" type="submit"></button></span>
+				   				 			<table>
+   												<tr><td>
+   													 <input id="Search"  type="text" class="form-control sear" name="search" placeholder="Recherche"> 
+   												</td>
+   												<td>
+   													<a th:if="${chercher}"  href="/list" class=" p-t-4 p-l-10 text-dark fas fa-arrow-circle-left fa-2x"></a>
+   												</td>
+   												</tr>
+   											</table>
+				  						</div>
+									</form>
+				
+							</td>
+							<td>
+								<p class="my-5" align="right">
+									<a href="/addArchive" class="btn " ><i class="fa fa-plus"></i> Ajouter Un Archive</a>
+								</p>
+							</td>
+						</tr>
+					</table>
+				<br>	
+							
+					
+					<table class="table table-hover " >
+									<thead>
+										<tr>
+											<th>Numéro</th>
+											<th>Type</th>
+											<th>CIN</th>
+											<th>Date</th>
+											<th>Montant</th>
+											<th>Modifier</th>
+											<th>Supprimer</th>
+									
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="arch : ${archives}">
+											<td th:text="${arch.uniqueCode}"></td>
+											<td th:text="${arch.nom}"></td>
+											<td th:text="${arch.cin}"></td>
+											<td th:text="${arch.date}"></td>
+											<td th:text="${arch.montant}"></td>
+											
+											<td><a th:href="@{/edit/{id}(id=${arch.id})}"class="btn  " id="resp"><i class="fas fa-user-edit ml-2"></i></a></td>
+											<td><a class="btn" th:onclick="'confirmeDelete(\''+ @{/delete/{id}(id=${arch.id})}+ '\');'" id="resp"><i class="fas fa-user-times ml-2"></i></a></td>
+										</tr>
+										<tr>
+											<td  >Somme reçue : <span th:if="${somme}!=null" th:text="${somme}+' '+DT"></span><span th:if="${somme}==null" th:text="'0'+' '+DT"></span></td>
+											<td  >Somme servi  : <span th:if="${retrait}!=null" th:text="${retrait}+' '+DT"></span><span></span><span th:if="${retrait}==null" th:text="'0'+' '+DT" ></span></td>
+											<td colspan="3" align="center">Solde Courant : <span th:if="${stockCourant}!=null" th:text="${stockCourant}+' '+DT"></span><span></span><span th:if="${stockCourant}==null" th:text="'0'+' '+DT" ></span></td>
+											<td colspan="3" align="left">Votre Montant : <span data-th-if="${cat}"><span th:if="${cat.montant}!=null" th:text="${cat.montant}+'DT'"></span><span th:if="${cat.montant}==null" th:text="'0'+'DT'"></span></span><span data-th-unless="${cat}">0 DT</span></span></td>
+										
+										</tr>
+									</tbody>
+								</table>
+								
+								
+						<table class="searchTab">
+							<tr>
+								<td>
+								
+								<nav aria-label="Page navigation example" th:if="${totalPages > 1}">
+									  <ul class="pagination" >
+									  	<li class="page-item" ><a th:if="${currentPage > 1}" class="page-link" th:href="@{'/page/'+1}">Début</a><a th:unless="${currentPage > 1}">Début</a></li>
+									    <li class="page-item" ><a th:if="${currentPage > 1}" class="page-link" th:href="@{'/page/'+${currentPage - 1}}">Précédent</a><a th:unless="${currentPage > 1}">Précédent</a></li>
+									   
+									    <li th:each="i: ${#numbers.sequence(begin,end)}" class="page-item "><a th:if="${currentPage !=i}" class="page-link" th:href="@{'/page/'+${i}}">[[${i}]]</a><span class="text-white"  th:unless="${currentPage!=i}">[[${i}]]</span></li>
+									 
+									    <li class="page-item"><a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}}">Suivant</a><a th:unless="${currentPage < totalPages}">Suivant</a></li>
+									    <li class="page-item"><a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages}}">Dernière</a><a th:unless="${currentPage < totalPages}">Dernière</a></li>
+										
+									  </ul>
+								</nav>	
+							
+								</td>
+								<td align="left" th:unless="${totalPages > 1}">
+									<p class="my-5" >
+										<a href="/listAll" class="btn "><i class="glyphicon glyphicon-eye-open"> Afficher Tous</i></a>
+									</p>
+								
+								</td>
+								<td align="right" th:if="${totalPages > 1}">
+									<p class="my-5" >
+										<a href="/listAll" class="btn "><i class="glyphicon glyphicon-eye-open"> </i> Afficher Tous</a>
+									</p>
+								
+								</td>
+							</tr>
+						</table>	
+							
+									
+			</div>
+		</div>
+		</div>
+	</div>
+	
+	<footer class="footer ">
+       		<div class="text-center"><p style="color:rgb(180,180,180);"> <i class="fa fa-copyright "></i>  2020 Copyright | <a href="https://www.facebook.com/mouhebmhh"><b>Mouheb</b></a></p></div>
+    </footer>
+  <script type="text/javascript" src="/js/dialog.js"></script>
+	<script type="text/javascript" src="/js/dialog-polyfill.js"></script>
+	<script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
+	<script type="text/javascript" th:src="@{/pdf/dist/jspdf.min.js/}"></script>
+	<script type="text/javascript" th:src="@{/pdf/dist/jspdf.plugin.autotable.js/}"></script>
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+</body>
+</html>

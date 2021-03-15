@@ -1,0 +1,20 @@
+.dlg-dialog {
+    border: none;
+   	margin:auto;
+   
+    background: rgba(0,0,0,0.8);
+}
+
+.dlg-header {
+    background-color: #901065;
+    color: white;
+}
+
+.dlg-caption {
+    height: 1.17em;
+    text-shadow: 1px 1px 1px black;
+}
+.dlg-close-button::before,
+.dlg-close-button::after {
+    background-color: white;
+}

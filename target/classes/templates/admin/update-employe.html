@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>POSTE</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/stylebtn.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+<link rel="icon" type="image/png" th:href="@{/images/icons/login.ico}"/>
+<link rel="stylesheet" th:href="@{/fontawesome/css/all.css}" >
+<link rel="stylesheet" th:href="@{/css/dialog.css}">
+<link rel="stylesheet" th:href="@{/css/dialog-simple.css}">	
+<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}">	
+</head>
+<body>
+<div class="limiter-log"> 
+	<nav class="navbar navbar-default">
+						<div class="container-fluid">
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle" data-toggle="collapse"
+									data-target="#myNavbar">
+									<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+										class="icon-bar"></span>
+								</button>
+								<a class="navbar-brand" href="/admin">Poste TN</a>
+							</div>
+							<div class="collapse navbar-collapse" id="myNavbar">
+								<ul class="nav navbar-nav">
+										<li ><a href="/listArchive"><i class="fa fa-archive"></i> Archive</a></li> 
+								
+									<li class="dropdown active">
+									      <a class="dropdown-toggle " data-toggle="dropdown" role="button"><i class="glyphicon glyphicon-user"></i> Employé<span class="caret"></span></a>
+									      <ul class="dropdown-menu ">
+
+									      	<li><a href="/listEmp">Gérer</a></li>
+									      
+									      	<li><a href="/soldeServis">Consulter le solde</a></li> 
+									       <li><a href="/Emplois">Emplois du temps</a></li> 
+				     						</ul>
+   									</li>
+				         		   	 
+				          			 <li ><a href="/adminPresence"><i class="fas fa-user-clock"></i> Présence</a></li>
+				          			 <li  ><a href="/statistique/stat"><i class="fa fa-pie-chart"></i> Statistique</a></li>
+				          			
+									<li class="dropdown ">
+									      <a class="dropdown-toggle " data-toggle="dropdown" role="button"><i class="glyphicon glyphicon-wrench"></i> Paramétre<span class="caret"></span></a>
+									      <ul class="dropdown-menu ">
+
+									      	<li><a href="/parametre/employe">Employé</a></li>
+									      	<li><a href="/parametre/travail">Travail</a></li> 
+									       
+				     						</ul>
+   									</li>
+								</ul>
+								<ul class="nav navbar-nav navbar-right">
+									<li class="dropdown">
+									      <a class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fas fa-user-circle p-r-5" > </i><span th:text="${#strings.toUpperCase(userConnect.nom)}+' '+${#strings.toUpperCase(userConnect.prenom)} "></span><span class="caret"></span></a>
+									      <ul class="dropdown-menu">
+											<li><a th:href="@{/editEmploye/{id}(id=${userConnect.id})}">Compte</a></li>
+									       <li><a href="/logout">Déconnexion <span class="glyphicon glyphicon-log-in" ></span></a></li>
+									       
+				     						</ul>
+   									</li>
+								</ul>
+							</div>
+						</div>
+					</nav>
+
+		
+	
+		<div class="container col-6">
+		
+			<div class="wrap-login10 p-l-45 p-r-35 p-t-55 p-b-55">
+
+				
+
+								<table class="searchTab">
+									<tr>
+										<td><h1>Compte</h1></td>
+										
+									<td>
+									
+										<p class="my-5" align="right">
+											<a href="/listEmp"  ><i class="	fa fa-arrow-circle-left"> Retour</i></a>
+										</p>
+									</td>
+									
+									</tr>
+								</table><br>
+		
+								
+								<div th:if="${param.username}">
+									<div class="alert alert-danger text-center">Le nom d'utillisateur existe  déja pour un autre employé !!</div>
+								</div>
+								<div th:if="${param.email}">
+									<div class="alert alert-danger text-center">L'email existe  déja pour un autre employé !!</div>
+								</div>
+								<div th:if="${param.cin}">
+									<div class="alert alert-danger text-center">Le CIN d'utillisateur existe  déja pour un autre employé !!</div>
+								</div>
+								<div th:if="${param.guichet}">
+									<div class="alert alert-danger text-center">Le numéro de guichet  existe  déja pour un autre employé !!</div>
+								</div>
+								<div th:if="${param.tel}">
+									<div class="alert alert-danger text-center">Le numéro de téléphone existe  déja pour un autre employé !!</div>
+								</div>
+								<div th:if="${param.password}">
+									<div class="alert alert-danger text-center">Le mot de passe est incorrect !!</div>
+								</div>
+								<div th:if="${param.code}">
+									<div class="alert alert-danger text-center">Le code secret est incorrect !!</div>
+								</div>
+								
+								<div class="row">
+			<form th:action="@{/updateUserNom/{id}(id=${employe.id})}" th:object="${employe}" method="post" name="f" class="validate-forms">				
+					<p class="my-5" align="right" th:if="${nom}">
+						<a th:href="@{/editEmploye/{id}(id=${employe.id})}" class="btn " ><i
+							class="	fa fa-arrow-circle-left"> Retour</i></a>
+				</p>
+					<p class="my-5" align="right" th:if="${cin}">
+						<a th:href="@{/editEmploye/{id}(id=${employe.id})}" class="btn " ><i
+							class="	fa fa-arrow-circle-left"> Retour</i></a>
+				<br>	</p>
+				
+				<p class="my-5" align="right" th:if="${email}">
+						<a th:href="@{/editEmploye/{id}(id=${employe.id})}" class="btn " ><i
+							class="	fa fa-arrow-circle-left"> Retour</i></a>
+					</p>
+				<p class="my-5" align="right" th:if="${tel}">
+						<a th:href="@{/editEmploye/{id}(id=${employe.id})}" class="btn " ><i
+							class="	fa fa-arrow-circle-left"> Retour</i></a>
+				</p>
+				<p class="my-5" align="right" th:if="${adresse}">
+						<a th:href="@{/editEmploye/{id}(id=${employe.id})}" class="btn " ><i
+							class="	fa fa-arrow-circle-left"> Retour</i></a>
+					</p>
+				<p class="my-5" align="right" th:if="${guichet}">
+						<a th:href="@{/editEmploye/{id}(id=${employe.id})}" class="btn " ><i
+							class="	fa fa-arrow-circle-left"> Retour</i></a>
+			</p>
+			<p class="my-5" align="right" th:if="${username}">
+						<a th:href="@{/editEmploye/{id}(id=${employe.id})}" class="btn " ><i
+							class="	fa fa-arrow-circle-left"> Retour</i></a>
+			</p>
+			<p class="my-5" align="right" th:if="${password}">
+						<a th:href="@{/editEmploye/{id}(id=${employe.id})}" class="btn " ><i
+							class="	fa fa-arrow-circle-left"> Retour</i></a>
+			</p>
+				<p class="my-5" align="right" th:if="${codeSecret}">
+						<a th:href="@{/editEmploye/{id}(id=${employe.id})}" class="btn " ><i
+							class="	fa fa-arrow-circle-left"> Retour</i></a>
+					</p><br>
+					<table class="table tt">
+
+					  <tbody>
+					    <tr>
+					    	
+					    	
+					      <td align="left" ><span th:unless="${nom}" ><b>Nom et Prénom</b><br><span th:text="${employe.nom}+' '+${employe.prenom}"></span></span>
+					      		<div class="form-group" th:if="${nom}">
+					   					<div class="col-md-4">
+					   						<label class="text-left">Nom:</label>
+					   						<div class="wrap-input1000 validate-input " data-validate = "Invalide Nom !">
+					      					<input type="text"  th:field="*{nom}" class="form-control" >
+					      					</div>
+					      				</div>
+					      				<div class="col-md-4">
+					      					<label class="text-left">Prénom:</label>
+					      					<div class="wrap-input1000 validate-input " data-validate = "Invalide Prénom !">
+					      					<input type="text" th:field="*{prenom}" class="form-control" >
+					      					
+					      					</div>
+					      				</div>
+					      				
+					      				
+					      			</div>
+					      </td>
+					    
+					      
+					      <td  align="right"><a th:unless="${nom}" th:href="@{/editEmployeNom/{id}(id=${employe.id})}" class="btn  " id="resp"><i class="glyphicon glyphicon-edit"></i></a>
+					      			
+					      	<br>
+					      					<button th:if="${nom}" type="submit" class="btn">Modifer <i class="glyphicon glyphicon-edit"></i></button>
+					      			
+					      </td>
+					      
+					    </tr>
+					        <tr>
+					    	
+					    	
+					      <td align="left"><span th:unless="${cin}"><b>CIN</b><br><span  th:text="${employe.cin}"></span></span>
+					      	<div class="form-group" th:if="${cin}">
+					   					
+					   						<label class="text-left">CIN:</label>
+					   						<div class="wrap-input1000 validate-input " data-validate = "Invalide Nom !">
+					      					<input type="text"  th:field="*{cin}" class="form-control" >
+					      					</div>
+					      				</div>
+					      </td>
+					      
+					      
+					      <td  align="right"><a th:unless="${cin}" th:href="@{/editEmployeCIN/{id}(id=${employe.id})}" class="btn  " id="resp"><i class="glyphicon glyphicon-edit"></i></a>
+					      			
+					      				
+					      				<br>
+					      					<button th:if="${cin}" type="submit" class="btn">Modifer <i class="glyphicon glyphicon-edit"></i></button>
+					      				
+					      				
+					   
+					      	
+					      </td>
+					      
+					    </tr>
+					    
+					    <tr>
+					    	
+					    	
+					      <td align="left" >
+					      
+					      <span th:unless="${email}"><b>Email</b><br><span  th:text="${employe.email}"></span></span>
+					   		   <div class="form-group" th:if="${email}">
+					   					
+					   						<label class="text-left">Email:</label>
+					   						<div class="wrap-input1000 validate-input " data-validate = "Invalide Email!">
+					      					<input type="text"  th:field="*{email}" class="form-control" >
+					      					</div>
+					      				
+					  		    </div>
+					      
+					      </td>
+					  
+					     
+					      <td align="right"><a th:unless="${email}" th:href="@{/editEmployeEmail/{id}(id=${employe.id})}" class="btn  " id="resp"><i class="glyphicon glyphicon-edit"></i></a>
+					      				
+					      	
+					      					<br><button th:if="${email}" type="submit" class="btn">Modifer <i class="glyphicon glyphicon-edit"></i></button>
+					      			
+					      				
+					      			
+					      	
+					      </td>
+					      
+					    </tr>
+					    
+					     <tr>
+					    	
+					    	
+					      <td align="left" >
+					      
+					     <span th:unless="${tel}"> <b>Téléphone</b><br><span  th:text="${employe.tel}"></span></span>
+					      <div class="form-group" th:if="${tel}">
+					   					
+					   						<label class="text-left">Téléphone:</label>
+					   						<div class="wrap-input1000 validate-input " data-validate = "Invalide téléphone !">
+					      					<input type="text"  th:field="*{tel}" class="form-control" >
+					      			
+					      				</div>
+					      		</div>
+					      </td>
+					  
+					      <td  align="right"><a th:unless="${tel}" th:href="@{/editEmployeTel/{id}(id=${employe.id})}" class="btn " id="resp"><i class="glyphicon glyphicon-edit"></i></a>
+					      		
+					      			
+					      				
+					      		<br><button th:if="${tel}" type="submit" class="btn">Modifer <i class="glyphicon glyphicon-edit"></i></button>
+					      				
+					      			
+					      	
+					      </td>
+					      
+					    </tr>
+					    
+					    <tr>
+					    	 
+					    	
+					      <td align="left" >
+					      
+					     <span th:unless="${adresse}">  <b>Adresse</b><br><span  th:text="${employe.adresse}"></span></span>
+					      <div class="form-group" th:if="${adresse}">
+					   					
+					   						<label class="text-left">Adresse:</label>
+					   						<div class="wrap-input1000 validate-input " data-validate = "Invalide adresse !">
+					      					<input type="text"  th:field="*{adresse}" class="form-control" >
+					      					</div>
+					      				
+					      			</div>
+					      </td>
+					 
+					      
+					      <td  align="right"><a th:unless="${adresse}" th:href="@{/editEmployeAdresse/{id}(id=${employe.id})}" class="btn " id="resp"><i class="glyphicon glyphicon-edit"></i></a>
+					      		
+					      			
+					      				<br>
+					      					<button th:if="${adresse}" type="submit" class="btn">Modifer <i class="glyphicon glyphicon-edit"></i></button>
+					      				
+					      				
+					      			
+					      	
+					      </td>
+					      
+					    </tr>
+					     <tr>
+					    	
+					    	
+					      <td align="left" ><span th:unless="${guichet}"><b>Numéro de guichet</b><br><span th:if="${employe.guichet}==-3">Aucun</span><span th:if="${employe.guichet}!=-3" th:text="${employe.guichet}"></span></span>
+					      
+					      	<div class="form-group" th:if="${guichet}" style="width:50%">
+					   					
+					   						<label class="text-left">Guichet :</label>
+					   						<div class="wrap-input1000 validate-input " data-validate = "Invalide numéro guichet !">
+					   						<div class="custom-select" data-validate = "Invalide numéro guichet !">
+					   						<select  th:field="*{guichet}" size="1"  class="form-control guichet" th:each="emps : ${employe.roles}">
+					   						<option value="-1"></option>
+					   						<option value="-3">Aucun</option>
+					   						<option th:unless="${emps.name}=='ROLE_SIMPLE'" th:each="i : ${#numbers.sequence(1, guichet)}" th:value="${i}" th:text="${i}"></option>
+					   						</select>
+					   						</div>
+					      					</div>
+					      				</div>
+					      
+					      </td>
+					      
+					      
+					      <td  align="right"><a th:unless="${guichet}" th:href="@{/editEmployeGuichet/{id}(id=${employe.id})}" class="btn " id="resp"><i class="glyphicon glyphicon-edit"></i></a>
+					      		
+					      			
+					      				
+					      				
+					      					<br><button th:if="${guichet}" type="submit" class="btn">Modifer <i class="glyphicon glyphicon-edit"></i></button>
+					      				
+					      				
+					      	
+					      	
+					      </td>
+					      
+					    </tr>
+					  <tr>
+					    	
+					    	
+					      <td align="left"  ><span th:unless="${codeSecret}"><b>Code secret</b><br>************</span>
+					      <div class="form-group" th:if="${codeSecret}">
+					   					
+					      				<div class="col-md-6">
+					   						<label class="text-left">Nouveau code :</label>
+					   						<div class="wrap-input1000 validate-input " data-validate = "Invalide Code secret !">
+					      					<input type="password"  name="codeSecret" class="form-control" >
+					      					</div>
+					      				</div>
+					   				</div>
+					      </td>
+					     
+					      
+					      <td  align="right"><a th:unless="${codeSecret}" th:href="@{/editEmployeCode/{id}(id=${employe.id})}" class="btn  " id="resp"><i class="glyphicon glyphicon-edit"></i></a>
+
+					      					<br><button th:if="${codeSecret}" type="submit" class="btn">Modifer <i class="glyphicon glyphicon-edit"></i></button>
+					      				
+					      				
+					      		
+					      	
+					      </td>
+					      
+					    </tr>
+					  	  <tr>
+					    	
+					    	
+					      <td align="left"><span  th:unless="${username}"><b>Nom d'utilisateur</b><br><span  th:text="${employe.username}"></span></span>
+					      	<div class="form-group" th:if="${username}">
+					   					
+					   						<label class="text-left">Nom d'utilisateur:</label>
+					   						<div class="wrap-input1000 validate-input " data-validate = "Invalide Nom d'utilisateur !">
+					      					<input type="text"  th:field="*{username}" class="form-control" >
+					      			
+					      					</div>
+					      			</div>
+					      </td>
+					   
+					      
+					      <td  align="right"><a th:unless="${username}" th:href="@{/editEmployeUsername/{id}(id=${employe.id})}" class="btn " id="resp"><i class="glyphicon glyphicon-edit"></i></a>
+					      		
+					      			
+					      				
+					      				<br>
+					      					<button th:if="${username}" type="submit" class="btn">Modifer <i class="glyphicon glyphicon-edit"></i></button>
+					      				
+					      				
+					      		
+					      	
+					      </td>
+					      
+					    </tr>
+					    <tr>
+					    	<td align="left" ><span th:unless="${password}"><b>Mot de passe</b><br>***************</span>
+					    		<div class="form-group" th:if="${password}">
+					   					
+					      				<div class="col-md-6 text-left">
+											  
+					      					<label class="text-left">Neveau mot de passe</label>
+					      					<div class="wrap-input1000 validate-input " data-validate = "Invalide Neveau mot de passe !">
+					      					<input type="password"  name="newPassword" class="form-control pass" >
+					      					</div>
+					      					<span th:if="${param.identique}" class="text-danger">Mot de passe non identique !!</span>
+					      					
+					      				</div>
+					      				<div class="col-md-6 text-left">
+					      					<label class="text-left">Confirmer le mot de passe</label>
+					      					<div class="wrap-input1000 validate-input " data-validate = "Invalide  Confirme mot de passe !">
+					      					<input type="password"  name="confirmePassword" class="form-control" >
+					      					</div>
+					      					<span th:if="${param.identique}" class="text-danger">Mot de passe non identique !!</span>
+					      					
+					      				</div>
+					      				
+					      			</div>
+					    	
+					    	</td>
+					     	
+					    	<td align="right"><a th:unless="${password}" th:href="@{/editEmployePassword/{id}(id=${employe.id})}" class="btn " id="resp"><i class="glyphicon glyphicon-edit"></i></a>
+					    	
+					      			<br>
+					      					<button  th:if="${password}" type="submit" class="btn">Modifer <i class="glyphicon glyphicon-edit"></i></button>
+					      				
+					      			</td>
+					      	</tr>
+					  
+					  
+					  			 <tr th:each=" emps : ${employe.roles}" th:unless="${emps.name}=='ROLE_ADMIN'">
+					    		<td align="left" ><span th:unless="${role}"><b>Rôle</b><br><span th:each="emps : ${employe.roles}"><span th:if="${emps.name}=='ROLE_ADMIN'" >Administrateur</span><span th:if="${emps.name}=='ROLE_USER'" >Guichetier</span><span th:if="${emps.name}=='ROLE_SIMPLE'" >Simple employé</span></span></span>
+					    		<div class="form-group" th:if="${role}">
+					   					<div class="col-md-6 text-left"><br>
+					   						<label class="text-left">Rôle</label>
+					   						<div class="custom-select">	
+												<select class="form-control" name="roles" >
+													<option value="" th:each="emps : ${employe.roles}"><span th:if="${emps.name}=='ROLE_ADMIN'" >Administrateur</span><span th:if="${emps.name}=='ROLE_USER'" >Guichetier</span><span th:if="${emps.name}=='ROLE_SIMPLE'" >Simple employé</span></option>
+													<option value="ROLE_USER">Guichetier</option>
+													<option value="ROLE_SIMPLE">Employé</option>
+												</select>
+											</div>
+					      				</div>
+					   			</div>	
+					    	
+					    		</td>
+					     	
+					    	<td align="right"><a th:unless="${role}" th:href="@{/editEmployeRole/{id}(id=${employe.id})}" class="btn " id="resp"><i class="glyphicon glyphicon-edit"></i></a>
+					    	
+					      			<br>
+					      					<button  th:if="${role}" type="submit" class="btn">Modifer <i class="glyphicon glyphicon-edit"></i></button>
+					      				
+					      			</td>
+					      	</tr>
+					  
+					  </tbody>
+				</table>
+			</form>
+									</div>
+								
+									
+						
+						
+				
+
+			</div>
+		</div>
+	</div>
+	<footer class="footer ">
+       		<div class="text-center"><p style="color:rgb(180,180,180);"> <i class="fa fa-copyright "></i>  2020 Copyright | <a href="https://www.facebook.com/mouhebmhh"><b>Mouheb</b></a></p></div>
+    </footer>
+
+		<script th:src="@{/vendor/jquery/jquery-3.2.1.min.js}"></script>
+		<script th:src="@{/vendor/animsition/js/animsition.min.js}"></script>
+		<script th:src="@{/vendor/bootstrap/js/popper.js}"></script>
+		<script th:src="@{/vendor/select2/select2.min.js}"></script>
+		<script th:src="@{/vendor/daterangepicker/moment.min.js}"></script>
+		<script th:src="@{/vendor/daterangepicker/daterangepicker.js}"></script>
+		<script th:src="@{/vendor/countdowntime/countdowntime.js}"></script>
+		<script th:src="@{/js/main.js}"></script>
+    	<script type="text/javascript" src="/js/dialog.js"></script>
+    	<script type="text/javascript" src="/js/select.js"></script>	
+		<script type="text/javascript" src="/js/dialog-polyfill.js"></script>
+		<script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
+		<script type="text/javascript" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+</body>
+</html>

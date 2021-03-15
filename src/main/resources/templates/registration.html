@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>POSTE</title>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+	<link rel="stylesheet" th:href="@{/fontawesome/css/all.css}" >
+
+	<link rel="stylesheet" type="text/css" th:href="@{/css/stylebtn.css}">
+	<link rel="icon" type="image/png" th:href="@{/images/icons/login.ico}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}">
+<style type="text/css">
+
+</style>
+</head>
+<body>
+	<div class="limiter-log"> 
+			<nav class="navbar navbar-default">
+						<div class="container-fluid">
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle" data-toggle="collapse"
+									data-target="#myNavbar">
+									<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+										class="icon-bar"></span>
+								</button>
+								<a class="navbar-brand" href="/admin">Poste TN</a>
+							</div>
+							<div class="collapse navbar-collapse" id="myNavbar">
+								<ul class="nav navbar-nav">
+										<li ><a href="/listArchive"><i class="fa fa-archive"></i> Archive</a></li> 
+								
+									<li class="dropdown active">
+									      <a class="dropdown-toggle " data-toggle="dropdown" role="button"><i class="glyphicon glyphicon-user"></i> Employé<span class="caret"></span></a>
+									      <ul class="dropdown-menu ">
+
+									      	<li><a href="/listEmp">Gérer</a></li>
+									      
+									      	<li><a href="/soldeServis">Consulter le solde</a></li> 
+									       <li><a href="/Emplois">Emplois du temps</a></li> 
+				     						</ul>
+   									</li>
+				         		   	 
+				          			 <li ><a href="/adminPresence"><i class="fas fa-user-clock"></i> Présence</a></li>
+				          			 <li  ><a href="/statistique/stat"><i class="fa fa-pie-chart"></i> Statistique</a></li>
+				          			
+									<li class="dropdown ">
+									      <a class="dropdown-toggle " data-toggle="dropdown" role="button"><i class="glyphicon glyphicon-wrench"></i> Paramétre<span class="caret"></span></a>
+									      <ul class="dropdown-menu ">
+
+									      	<li><a href="/parametre/employe">Employé</a></li>
+									      	<li><a href="/parametre/travail">Travail</a></li> 
+									       
+				     						</ul>
+   									</li>
+								</ul>
+								<ul class="nav navbar-nav navbar-right">
+									<li class="dropdown">
+									      <a class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fas fa-user-circle p-r-5" > </i><span data-th-if="${userConnect}" th:text="${userConnect.nom}+' '+${userConnect.prenom} "></span><span class="caret"></span></a>
+									      <ul class="dropdown-menu">
+											<li><a th:href="@{/editEmploye/{id}(id=${userConnect.id})}">Compte</a></li>	
+									       <li><a href="/logout">Déconnexion <span class="glyphicon glyphicon-log-in" ></span></a></li>
+									       
+				     						</ul>
+   									</li>
+								</ul>
+							</div>
+						</div>
+					</nav>
+		
+				
+			
+		<div class="container col-6">
+			<div class="wrap-login100 p-l-60 p-r-60 p-t-55 p-b-55">				
+				<form th:action="@{/registration}" th:object="${user}" method="post" name="f" class="validate-forms ">
+								<div th:if="${param.error}">
+									<div class="alert alert-danger" align="center">Erreur! </div>
+								</div>
+									<table class="searchTab"><tr><td><h1>Compte</h1></td>
+										
+									<td>
+									
+									<p class="my-5" align="right">
+										<a href="/listEmp"  ><i class="	fa fa-arrow-circle-left"> Retour</i></a>
+									</p>
+									</td>
+									
+									</tr></table><br>
+								<div class="row">
+							
+										<div class="form-group col-md-4 mb-3" th:classappend="${#fields.hasErrors('nom')}? 'has-error':''">
+											
+											<span class="txt2 p-b-11 control-label" >Nom</span> 
+										<div class="wrap-input1000 validate-input " data-validate = "Nom !">
+											<input id="nom" class="form-control" th:field="*{nom}" />
+										</div>	
+											<span class="text-danger" th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></span>
+										</div>
+										<div class="form-group col-md-4 mb-3" th:classappend="${#fields.hasErrors('prenom')}? 'has-error':''">
+											<span class="txt2 p-b-11 control-label">Prénom</span>
+										<div class="wrap-input1000 validate-input " data-validate = "Prénom !!">
+											<input id="prenom" class="form-control" th:field="*{prenom}" />
+										</div>
+											<p class="text-danger" th:each="error : ${#fields.errors('prenom')}" th:text="${error}">Validation error</p>
+										</div>
+										
+										<div class="form-group col-md-4 mb-3" th:classappend="${#fields.hasErrors('username')}? 'has-error':''">
+											<span class="txt2 p-b-11 control-label">Nom d'utilisateur</span>
+										<div class="wrap-input1000 validate-input " data-validate = "Nom d'utilisateur !">
+											<input id="username" class="form-control" th:field="*{username}" />
+										</div>
+											<p class="text-danger" th:each="error : ${#fields.errors('username')}" th:text="${error}">Validation error</p>
+										</div>
+									
+								</div>	
+											<div class="row">
+											<div class="col-xs-6">
+											<span class="txt2 p-b-11 control-label">Rôle</span>
+											<div class="wrap-input1000 validate-input "  th:classappend="${#fields.hasErrors('role')}? 'has-error':''"  data-validate = "Période du travail !">
+											<div class="custom-select">	
+												<select class="form-control" th:field="*{role}" >
+													<option value=""></option>
+													<option value="ROLE_USER">Guichetier</option>
+													<option value="ROLE_SIMPLE">Employé</option>
+												</select>
+												<p class="text-danger" th:each="error : ${#fields.errors('role')}" th:text="${error}">Validation error</p>
+											</div>
+											</div>
+										
+											</div>
+								
+										<div class="col-xs-6">
+											<span class="txt2 p-b-11 control-label">Période du travail</span>
+											<div class="wrap-input1000 validate-input " data-validate = "Période du travail !">
+											<div class="custom-select">	
+												<select class="form-control" name="periode" >
+													<option value=""></option>
+													<option value="jour">Jour</option>
+													<option value="nuit">Nuit</option>
+												</select>
+											</div>
+											</div>
+										
+											</div>
+										</div>
+									<div class="form-group p-t-10 " th:classappend="${#fields.hasErrors('email')}? 'has-error':''"  >
+										<span class="txt2 p-b-11 control-label">Email</span>
+										<div class="wrap-input1000 validate-input " data-validate = "email !">
+										<input id="email" class="form-control space-right" th:field="*{email}" />
+										</div>
+										<p class="text-danger" th:each="error : ${#fields.errors('email')}" th:text="${error}">Validation error</p>
+										
+									</div>
+									
+								
+				
+								<div class="row">
+					
+										<div class="form-group col-md-6" th:classappend="${#fields.hasErrors('password')}? 'has-error':''">
+												<span class="txt2 p-b-11 control-label">Mot de passe</span>
+											<div class="wrap-input1000 validate-input " data-validate = "password !">
+											 <input id="password" class="form-control pass" type="password" th:field="*{password}" />
+											 </div>
+											<p class="text-danger" th:each="error : ${#fields.errors('password')}" th:text="${error}">Validation error</p>
+										</div>
+										
+										<div class="form-group col-md-6" th:classappend="${#fields.hasErrors('confirmPassword')}? 'has-error':''">
+											<span class="txt2 p-b-11 control-label">Confirmer  mot de passe</span>
+											<div class="wrap-input1000 validate-input " data-validate = "Confirmer  mot de passe !">
+											 <input id="confirmPassword" class="form-control " type="password" th:field="*{confirmPassword}" />
+											 </div>
+											<p class="text-danger" th:each="error : ${#fields.errors('confirmPassword')}" th:text="${error}">Validation error</p>
+										</div>
+										
+								</div>
+									<div class="row">
+										<div class="form-group" th:classappend="${#fields.hasErrors('adresse')}? 'has-error':''"  >
+											<div class="form-group col-md-6 mb-3" th:classappend="${#fields.hasErrors('code_secret')}? 'has-error':''">
+											<span class="control-label">Code secret</span>
+											<div class="wrap-input1000 validate-input " data-validate = "Code secret !">
+											<input id="code_secret" class="form-control" type="password" th:field="*{code_secret}" />
+											</div>
+											<p class="text-danger" th:each="error : ${#fields.errors('code_secret')}" th:text="${error}">Validation error</p>
+											</div>
+											<div class="col-xs-6">
+											<span class="txt2 p-b-11 control-label">Adresse</span>
+											<div class="wrap-input1000 validate-input " data-validate = "Adresse !">
+											 <input id="adresse" class="form-control" type="text" th:field="*{adresse}" />
+											 </div>
+											<p class="text-danger" th:each="error : ${#fields.errors('adresse')}" th:text="${error}">Validation error</p>
+											</div>
+										
+										</div>
+									</div>
+									<div class="row ">
+										<div class="form-group col-md-4 mb-3" th:classappend="${#fields.hasErrors('cin')}? 'has-error':''">
+											<span class="txt2 p-b-11 control-label">CIN</span>
+											<div class="wrap-input1000 validate-input " data-validate = "CIN !">
+											<input id="cin" class="form-control"	type="number" th:field="*{cin}" />
+											</div>
+											<span class="text-danger" th:each="error : ${#fields.errors('cin')}"  th:text="${error}">Invalide CIN !!</span>
+										</div>
+											<div class="form-group col-md-4 mb-3" th:classappend="${#fields.hasErrors('guichet')}? 'has-error':''">
+											<span class="txt2 p-b-11 control-label">Guichet</span>
+											<div class="wrap-input1000 validate-input " data-validate = "Numéro guichet !">
+											<div class="custom-select" data-validate = "Numéro guichet !">
+					   						<select  th:field="*{guichet}" size="1"  class="form-control guichet">
+					   						<option value="-1"></option>
+					   						<option value="-3">Aucun</option>	
+					   							<option data-th-if="${guichet}"  th:each="i : ${#numbers.sequence(1, 6)}" th:value="${i}" th:text="${i}"></option>
+					   						</select>
+					   						
+					   						</div>
+					   						</div>
+											<p class="text-danger" th:each="error : ${#fields.errors('guichet')}" th:text="${error}">Validation error</p>
+										</div>
+										<div class="form-group col-md-4" th:classappend="${#fields.hasErrors('tel')}? 'has-error':''">
+											<label for="tel" class="control-label">Tel</label> 
+											<div class="wrap-input1000 validate-input " data-validate = "Tel !">
+												<input id="tel" class="form-control" type="number" th:field="*{tel}" />
+											</div>
+											<p class="text-danger" th:each="error : ${#fields.errors('tel')}" th:text="${error}" >Invalide numéro de téléphone </p>
+										</div>
+										
+									</div>
+					
+							
+									<div class="row ">
+									<div class="form-group col-md-20"><br>
+										
+									   <button class="btn " type="submit"><i class="fa fa-plus"></i> Ajouter</button>
+										
+									</div>
+									
+									</div>
+									</form>
+					</div>
+				</div>
+			</div>
+		<footer class="footer ">
+       		<div class="text-center"><p style="color:rgb(180,180,180);"> <i class="fa fa-copyright "></i>  2020 Copyright | <a href="https://www.facebook.com/mouhebmhh"><b>Mouheb</b></a></p></div>
+    </footer>
+		<script type="text/javascript" src="/js/select.js"></script>
+		<script th:src="@{/vendor/jquery/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/vendor/animsition/js/animsition.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap/js/popper.js}"></script>
+	<script th:src="@{/vendor/select2/select2.min.js}"></script>
+	<script th:src="@{/vendor/daterangepicker/moment.min.js}"></script>
+	<script th:src="@{/vendor/daterangepicker/daterangepicker.js}"></script>
+	<script th:src="@{/vendor/countdowntime/countdowntime.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+		<script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
+		<script type="text/javascript" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+</body>
+</html>
